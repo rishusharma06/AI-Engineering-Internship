@@ -1,0 +1,5 @@
+=== Weather Report ===
+Temperature   : 43.8°C
+Wind Speed    : 12.4 km/h
+Wind Direction: 286°
+Is Daytime    : Yes
