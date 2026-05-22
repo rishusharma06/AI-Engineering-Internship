@@ -1,25 +1,6 @@
 # Public API Explorer
 
-A simple full-stack application built using **FastAPI (Python)** and **React + Vite**.  
-The app fetches user data from a public API, validates it using Pydantic, and displays it on the frontend with search functionality.
-
----
-
-# Features
-
-## Backend
-- Fetches data from a public API using `requests`
-- Uses `Pydantic` for response validation
-- Loads API URL from `.env`
-- Handles API/network errors gracefully
-- Built with FastAPI
-
-## Frontend
-- Displays users as reusable cards
-- Live search/filter functionality
-- Loading and error states
-- Built using React + Vite
-- Uses `useState` and `useEffect`
+A simple full-stack app built using FastAPI and React + Vite that fetches users from a public API and displays them with search functionality.
 
 ---
 
@@ -32,20 +13,103 @@ yourname-week1/
 │   ├── app.py
 │   ├── models.py
 │   ├── requirements.txt
-│   ├── .env
-│   └── venv/
+│   └── .env
 │
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
 │   │   │   └── Card.jsx
 │   │   ├── App.jsx
-│   │   ├── App.css
-│   │   └── main.jsx
-│   │
-│   └── package.json
+│   │   └── App.css
 │
 └── README.md
+```
+
+---
+
+# Features
+
+- Fetch data from public API
+- Backend validation using Pydantic
+- Search/filter users
+- Loading and error states
+- Reusable React Card component
+- Clean folder structure
+
+---
+
+# Backend Setup
+
+## Go to backend
+
+```bash
+cd backend
+```
+
+## Create virtual environment
+
+### macOS/Linux
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### Windows
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+## Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## Create `.env`
+
+```env
+API_URL=https://jsonplaceholder.typicode.com/users
+```
+
+## Run backend
+
+```bash
+uvicorn app:app --reload
+```
+
+Backend runs at:
+
+```txt
+http://127.0.0.1:8000/users
+```
+
+---
+
+# Frontend Setup
+
+## Go to frontend
+
+```bash
+cd frontend
+```
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Run frontend
+
+```bash
+npm run dev
+```
+
+Frontend runs at:
+
+```txt
+http://localhost:5173
 ```
 
 ---
@@ -57,7 +121,7 @@ yourname-week1/
 - FastAPI
 - Requests
 - Pydantic
-- Python-dotenv
+- python-dotenv
 
 ## Frontend
 - React
@@ -67,7 +131,18 @@ yourname-week1/
 
 ---
 
-# Public API Used
+# React Concepts Used
+
+- useState
+- useEffect
+- Conditional Rendering
+- Reusable Components
+- map()
+- filter()
+
+---
+
+# API Used
 
 ```txt
 https://jsonplaceholder.typicode.com/users
@@ -75,72 +150,5 @@ https://jsonplaceholder.typicode.com/users
 
 ---
 
-
-# How the App Works
-
-1. FastAPI fetches user data from the public API.
-2. Data is validated using Pydantic models.
-3. React frontend fetches data from FastAPI backend.
-4. Users are displayed using reusable `<Card />` components.
-5. Search box filters users dynamically.
-
----
-
-# Features
-
-- Search users by name
-- Loading state while fetching data
-- Error handling for failed API requests
-- Responsive card layout
-
----
-
-# Example API Response
-
-```json
-{
-  "id": 1,
-  "name": "Leanne Graham",
-  "email": "leanne@example.com"
-}
-```
-
----
-
-# Reusable Component Used
-
-```jsx
-<Card />
-```
-
-Used with `.map()` to display all users dynamically.
-
----
-
-# React Hooks Used
-
-## useState
-Used for:
-- users
-- loading
-- error
-- search input
-
-## useEffect
-Used to fetch API data when component loads.
-
----
-
-# Future Improvements
-
-- Add dark mode
-- Add pagination
-- Add sorting
-- Add user details page
-- Add responsive navbar
-
----
-
 # Author
-
 Rishu Sharma
