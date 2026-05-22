@@ -49,8 +49,8 @@ Q5. (Answer)--
 1. mkdir expense-tracker
    cd expense-tracker
 
-2. python3 -m venv venv
-   source venv/bin/activate
+2. python -m venv .venv
+   source .venv/Scripts/activate
 
 3. pip install requests
    pip install pydantic
