@@ -15,7 +15,6 @@ It can also use tools like a current time function when needed.
 * ChromaDB vector storage
 * Mistral AI integration
 * Simple tool calling
-* Source-based answers
 
 ---
 
