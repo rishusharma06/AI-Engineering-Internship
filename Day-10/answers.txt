@@ -1,0 +1,257 @@
+Week 2 Assessment -------------------
+
+Q1. (Answer)-----
+RAG exists to help LLMs give more accurate and updated answers using external documents. 
+Normal LLMs sometimes hallucinate facts and also do not know private or latest company data. 
+In RAG, the system first retrieves relevant information from documents before generating the answer. 
+This retrieval step gives the model real context to answer from. 
+Because of this, answers become more reliable and grounded in actual data.
+
+
+Q2. (Answer)-----
+(a) Embedding
+An embedding is a numerical vector representation of text that captures its meaning.
+
+(b) Vector similarity
+Vector similarity measures how close two embeddings are, and cosine similarity is most commonly used.
+
+(c) Chunk size
+Chunk size is the amount of text stored in one document chunk during splitting.
+
+(d) Chunk overlap
+Chunk overlap is the repeated text shared between consecutive chunks to preserve context.
+
+(e) top-k retrieval
+Top-k retrieval means returning the k most relevant chunks for a query.
+
+
+Q3. (Answer)-----
+Problems with chunk_size=2000 and chunk_overlap=0:
+
+Chunks become too large, so retrieval may fetch unnecessary information.
+Important context near chunk boundaries may get lost.
+Similar topics inside one huge chunk reduce retrieval precision.
+
+Better values:
+chunk_size = 500
+chunk_overlap = 100
+
+This gives smaller focused chunks while still preserving context between chunks.
+
+
+Q4. (Answer)-----
+import chromadb
+from sentence_transformers import SentenceTransformer
+
+docs = [
+    "Python is a programming language.",
+    "Machine learning uses data to train models.",
+    "ChromaDB is used for vector storage."
+]
+
+model = SentenceTransformer("all-MiniLM-L6-v2")
+embeddings = model.encode(docs).tolist()
+client = chromadb.Client()
+collection = client.create_collection(name="demo_docs")
+
+collection.add(
+    documents=docs,
+    embeddings=embeddings,
+    ids=["1", "2", "3"]
+)
+
+query = "What is vector database?"
+
+query_embedding = model.encode([query]).tolist()
+
+results = collection.query(
+    query_embeddings=query_embedding,
+    n_results=2
+)
+
+print(results["documents"])
+
+
+Q5. (Answer)-----
+This failure mode is called hallucination.
+
+Ways to reduce it:
+
+Improve retrieval quality using better chunking and embeddings.
+Add prompt instructions like “Answer only from the provided context."
+Evaluate retrieved chunks before generating the final answer.
+
+
+Q6. (Answer)-----
+LCEL (LangChain Expression Language) is a simple way to connect LangChain components together. 
+The | operator passes output from one step into the next step. 
+It helps create clean and readable pipelines like prompt to model to parser. 
+LCEL is preferred because the code becomes shorter, modular, and easier to debug compared to manually calling .invoke() multiple times.
+
+
+Q7. (Answer)----
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+from langchain_core.output_parsers import StrOutputParser
+
+prompt = ChatPromptTemplate.from_template(
+    "Write a one-sentence tagline for: {topic}"
+)
+
+model = ChatOpenAI(model="gpt-3.5-turbo")
+parser = StrOutputParser()
+chain = prompt | model | parser
+result = chain.invoke({"topic": "electric scooters"})
+
+print(result)
+
+
+Q8. (Answer)-----
+from pydantic import BaseModel, Field
+from langchain_core.output_parsers import PydanticOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI
+
+class MovieReview(BaseModel):
+    title: str
+    rating: int = Field(description="Rating from 1 to 10")
+    one_line_review: str
+
+parser = PydanticOutputParser(pydantic_object=MovieReview)
+
+prompt = PromptTemplate(
+    template="""
+Give a movie review.
+
+{format_instructions}
+
+Movie: {movie}
+""",
+    input_variables=["movie"],
+    partial_variables={
+        "format_instructions": parser.get_format_instructions()
+    }
+)
+
+model = ChatOpenAI(model="gpt-3.5-turbo")
+
+chain = prompt | model | parser
+
+result = chain.invoke({"movie": "Inception"})
+
+print(result)
+
+
+Q9. (Answer)-----
+(a) Loading PDF = PyPDFLoader
+
+(b) Splitting chunks = RecursiveCharacterTextSplitter
+
+(c) Embedding chunks = from Hugging face
+
+(d) Vector store = Chroma
+
+(e) Retrieval = vectorstore.as_retriever()
+
+(f) Prompt + model + parser = prompt | ChatOpenAI | StrOutputParser
+
+
+Q10. (Answer)-----
+A chain is a fixed sequence of steps where execution always follows the same path. 
+A graph is more flexible because it can branch, loop, and make decisions dynamically. 
+Chains are good for simple workflows like prompt to model to output. Graphs are useful when agents need reasoning or tool usage. 
+For example, a graph can decide whether to call a search tool or answer directly, which a normal chain cannot handle properly.
+
+
+Q11. (Answer)-----
+State = Shared data that moves through the graph.
+
+Nodes = Functions that process or update the state.
+
+Edges = Connections that define the flow between nodes.
+
+Conditional edges = Special edges that choose the next node based on conditions.
+
+The state flows from one node to another, and each node updates the state before passing it forward.
+
+
+Q12. (Answer)-----
+from typing import TypedDict, List
+from langgraph.graph import StateGraph, START, END
+
+class MyState(TypedDict):
+    messages: List[str]
+
+def greet(state):
+    state["messages"].append("Hello!")
+    return state
+
+def farewell(state):
+    state["messages"].append("Goodbye!")
+    return state
+
+builder = StateGraph(MyState)
+
+builder.add_node("greet", greet)
+builder.add_node("farewell", farewell)
+
+builder.add_edge(START, "greet")
+builder.add_edge("greet", "farewell")
+builder.add_edge("farewell", END)
+
+graph = builder.compile()
+
+result = graph.invoke({"messages": []})
+
+print(result)
+
+
+Q13. (Answer)-----
+{
+   "messages": [],
+   "query": "",
+   "tool_result": ""
+}
+
+Nodes
+agent - decides whether tool is needed
+tool - calls search tool
+end - returns final answer
+Conditional Edge:
+If the query requires external information, route to tool; otherwise go directly to end.
+
+Loop Termination:
+After the tool returns results once, the graph routes back to the agent, which generates the final answer and then moves to end to stop execution.
+
+
+Q14. (Answer)-----
+MCP (Model Context Protocol) is a standard way for AI models to connect with external tools and data sources. 
+It solves the problem of every AI application using different custom integrations. 
+In MCP, the host is the application using AI, the client manages communication, and the server provides capabilities. 
+MCP servers can expose tools, resources, and prompts. This makes integrations reusable and easier to maintain across different AI systems.
+
+
+Q15. (Answer)-----
+MCP Tool = A function the model can execute, like a calculator tool that adds numbers.
+
+MCP Resource = Read-only data the model can access, like a company policy document.
+
+
+Q16. (Answer)-----
+from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("WordCountServer")
+
+@mcp.tool()
+def word_count(text: str) -> int:
+    """
+    Count the number of words in a string.
+    """
+    return len(text.split())
+
+mcp.run()
+
+
+Q17. (Answer)-----
+1. MCP provides a standard interface, so the same tool can work across multiple AI applications without rewriting integrations.
+2. MCP separates tools from the model logic, making systems cleaner, scalable, and easier to maintain
