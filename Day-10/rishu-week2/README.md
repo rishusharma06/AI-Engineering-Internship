@@ -97,22 +97,6 @@ python app.py
 
 ---
 
-# 💬 Example Questions
-
-```text id="r7pwxv"
-What is RAG?
-```
-
-```text id="gy8t6w"
-Explain Machine Learning.
-```
-
-```text id="ckx0o0"
-What is the current time?
-```
-
----
-
 # 🔄 Workflow
 
 ```text id="r2b7wj"
@@ -129,17 +113,6 @@ Final Response
 
 ---
 
-# 📌 Why This Project?
-
-This project demonstrates:
-
-* RAG pipeline implementation
-* Vector database usage
-* LangGraph agent flow
-* Tool calling
-* LLM integration with Mistral AI
-
----
 
 # 🧠 Concepts Used
 
@@ -166,23 +139,4 @@ What is the current time?
 
 ---
 
-# 📷 Sample Output
 
-```text id="6gzk0x"
-Ask Question: What is RAG?
-
-Answer:
-
-RAG stands for Retrieval Augmented Generation.
-It combines retrieval systems with language models for better answers.
-
-Source:
-data/rag.txt
-```
-
----
-
-# 👨‍💻 Author
-
-Rishu Sharma
-AI Engineering Bootcamp — Week 2 Assessment
