@@ -1,0 +1,28 @@
+AI Engineering Bootcamp — Company Policy Document
+
+REFUND POLICY
+Students can request a refund within 7 days of enrollment.
+Refunds are processed within 5 business days.
+To request a refund, email support@bootcamp.com with your enrollment ID.
+Partial refunds are not available after course materials are accessed.
+
+ATTENDANCE POLICY
+Students must attend at least 80% of all sessions.
+Missing more than 3 consecutive days requires a valid reason.
+All sessions are recorded and available for 30 days after the course ends.
+
+ASSESSMENT POLICY
+Assessments are conducted every Friday.
+Each assessment is practical — no written exams.
+Students must score at least 60% to proceed to the next week.
+Assessment results are shared within 24 hours.
+
+CAPSTONE PROJECT
+Every student must complete a capstone AI project in Week 3.
+The project must use at least RAG, one LangChain component, and a React frontend.
+Projects are presented on the last day of the bootcamp.
+
+CERTIFICATE
+Certificates are issued within 7 days of course completion.
+Students must complete all assessments and the capstone project.
+Certificates include a unique verification code.

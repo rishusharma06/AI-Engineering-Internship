@@ -1,0 +1,11 @@
+langchain
+langchain-openai
+langchain-groq
+langchain-mistralai
+langchain-community
+openai
+groq
+mistralai
+python-dotenv
+langchain_huggingface
+sentence-transformers
